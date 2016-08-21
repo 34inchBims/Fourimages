@@ -26,69 +26,56 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     private static final String DEBUG_TAG = "HttpExample";
-    private EditText urlText;
-    private TextView textView;
+    public ImageView imageview =(ImageView) findViewById(R.id.imageview1);
+    public String URL1 = getString(R.string.myURl);
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        urlText = (EditText) findViewById(R.id.myURL);
-        textView = (TextView) findViewById(R.id.myText);
     }
+
     public void myClickHandler(View view) {
-        String stringURL = urlText.getText().toString();
+        String stringURL = URL1;
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()){
-            new DownloadWebpageTask().execute(stringURL);
-        } else {
-            textView.setText("No network connection is available");
+            new DownloadImageTask().execute();
         }
 
     }
-    private class DownloadWebpageTask extends AsyncTask<String, Void, String>{
+    public class DownloadImageTask extends AsyncTask<ImageView, Void, Bitmap>{
+        ImageView imageView = null;
         @Override
-        protected String doInBackground(String ... urls) {
+        protected Bitmap doInBackground(ImageView ... imageViews) {
+            this.imageView = imageViews[0];
+            return download_Image((String)imageView.getTag());
+        }
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
+        }
+
+        private Bitmap download_Image(String url) {
+
+            Bitmap bmp = null;
             try {
-                return downloadURL(urls[0]);
-            } catch (IOException e) {
-                return "Unable to retrieve web page. URL may be invalid";
+                URL urln = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) urln.openConnection();
+                InputStream is = con.getInputStream();
+                bmp = BitmapFactory.decodeStream(is);
+                if (null != bmp)
+                    return bmp;
             }
+            catch (Exception e){
+            return bmp;
+
+            }return null;
         }
 
-        private String downloadURL(String myurl) throws IOException{
-            InputStream is = null
-                    int len = 500;
 
-            try{
-                URL url = new URL(myurl);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-                //start the query
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d(DEBUG_TAG, "The response is : " + response);
-                is = conn.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(is);
-                ImageView imageView = (ImageView)(R.id.imageview1);
-
-            }
-            finally {
-                if (is != null){
-                    is.close();
-                }
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            textView.setText(result);
-        }
     }
 
 }

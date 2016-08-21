@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item
-        type="id"
-        name="myURL">http://vignette3.wikia.nocookie.net/deathbattlefanon/images/2/29/Sasuke_Uchiha_Shippuden.png/revision/latest?cb=20150222195410</item>
-    <item
-        type="id"
-        name="myText">This is some text</item>
-    <item
-        type="ImageView"
-        name="image_view"></item>
+
 </resources>
