@@ -13,7 +13,8 @@
         android:id="@+id/imageview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ldpi"/>
+        android:src="@drawable/ldpi"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="@dimen/box_size"

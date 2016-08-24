@@ -3,6 +3,8 @@ package com.example.mcleod.fourimages;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -25,57 +29,59 @@ import java.net.NetworkInterface;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String DEBUG_TAG = "HttpExample";
-    public ImageView imageview =(ImageView) findViewById(R.id.imageview1);
-    public String URL1 = getString(R.string.myURl);
+    private ImageView mImageview;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mImageview = (ImageView) findViewById(R.id.imageview1);
     }
 
     public void myClickHandler(View view) {
-        String stringURL = URL1;
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()){
-            new DownloadImageTask().execute();
-        }
 
+        new DownloadImage().execute("http://www.vignette3.wikia.nocookie.net/deathbattlefanon/images/2/29/Sasuke_Uchiha_Shippuden.png/revision/latest?cb=20150222195410");
     }
-    public class DownloadImageTask extends AsyncTask<ImageView, Void, Bitmap>{
-        ImageView imageView = null;
+
+    private void setImage (Drawable drawable){
+        mImageview.setBackground(drawable);
+    }
+
+    public class DownloadImage extends AsyncTask<String, Integer, Drawable>{
+
         @Override
-        protected Bitmap doInBackground(ImageView ... imageViews) {
-            this.imageView = imageViews[0];
-            return download_Image((String)imageView.getTag());
-        }
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            imageView.setImageBitmap(result);
+        protected Drawable doInBackground(String... arg0) {
+            return downloadImage(arg0[0]);
         }
 
-        private Bitmap download_Image(String url) {
+        protected void onPostExecute(Drawable image){
+            setImage(image);
+        }
 
-            Bitmap bmp = null;
-            try {
-                URL urln = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) urln.openConnection();
-                InputStream is = con.getInputStream();
-                bmp = BitmapFactory.decodeStream(is);
-                if (null != bmp)
-                    return bmp;
-            }
-            catch (Exception e){
-            return bmp;
+        private Drawable downloadImage(String _url){
+            URL url;
+            InputStream in;
+            BufferedInputStream buf;
 
+            try{
+                url = new URL(_url);
+                in = url.openStream();
+                buf = new BufferedInputStream(in);
+                Bitmap bMap = BitmapFactory.decodeStream(buf);
+                if (in != null){
+                    in.close();
+                }
+                if (buf != null) {
+                    buf.close();
+                }
+
+                return new BitmapDrawable(bMap);
+
+            }catch  (Exception e){
+                Log.e("Error reading file", e.toString());
             }return null;
         }
-
-
     }
 
 }
