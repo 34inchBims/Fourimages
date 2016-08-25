@@ -9,36 +9,48 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     >
-<Button
-    android:layout_width="@dimen/box_size"
-    android:layout_height="@dimen/box_size"
-    android:text="@string/button_1"
-    android:layout_alignParentStart = "true"
-    android:layout_alignParentLeft = "true"
-    android:layout_alignParentTop="true"
-    />
+    <ImageView
+        android:id="@+id/imageview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ldpi"
+        android:layout_centerHorizontal="true"/>
     <Button
+        android:layout_width="@dimen/box_size"
+        android:layout_height="@dimen/box_size"
+        android:id="@+id/button1"
+        android:text="@string/button_1"
+        android:layout_alignParentLeft = "true"
+        android:layout_alignParentTop="true"
+        android:onClick="myClickHandler"
+        />
+    <Button
+        android:id="@+id/button2"
         android:layout_width="@dimen/box_size"
         android:layout_height="@dimen/box_size"
         android:text="@string/button_2"
         android:layout_alignParentRight = "true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd ="true"
+        android:onClick="myClickHandler"
         />
 
     <Button
+        android:id="@+id/button3"
         android:layout_width="@dimen/box_size"
         android:layout_height="@dimen/box_size"
         android:text="@string/button_3"
         android:layout_alignParentLeft = "true"
         android:layout_alignParentBottom="true"
+        android:onClick="myClickHandler"
         />
     <Button
+        android:id="@+id/button4"
         android:layout_width="@dimen/box_size"
         android:layout_height="@dimen/box_size"
         android:text="@string/button_4"
         android:layout_alignParentRight = "true"
         android:layout_alignParentBottom="true"
+        android:onClick="myClickHandler"
         />
 
 </RelativeLayout>

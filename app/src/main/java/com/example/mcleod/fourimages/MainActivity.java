@@ -38,10 +38,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mImageview = (ImageView) findViewById(R.id.imageview1);
     }
+    final View.OnClickListener mGlobal_OnClicklistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.button1:
+                    new DownloadImage().execute(getString(R.string.myURl));
+                    break;
+                case R.id.button2:
+                    new DownloadImage().execute(getString(R.string.myURL2));
+                    break;
+                case R.id.button3:
+                    new DownloadImage().execute(getString(R.string.myURL3));
+                    break;
+                case R.id.button4:
+                    new DownloadImage().execute(getString(R.string.myURL4));
+                    break;
 
+            }
+        }
+    };
     public void myClickHandler(View view) {
 
-        new DownloadImage().execute("http://www.vignette3.wikia.nocookie.net/deathbattlefanon/images/2/29/Sasuke_Uchiha_Shippuden.png/revision/latest?cb=20150222195410");
+       mGlobal_OnClicklistener.onClick(view);
     }
 
     private void setImage (Drawable drawable){
